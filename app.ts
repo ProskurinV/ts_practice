@@ -172,28 +172,3 @@
 // };
 // person1.showName();
 // person2.showName();
-
-// {
-//   "name": "ts_practice",
-//   "version": "1.0.0",
-//   "description": "",
-//   "main": "app.js",
-//   "scripts": {
-//     "test": "echo \"Error: no test specified\" && exit 1",
-//     "start": "lite-server"
-//   },
-//   "repository": {
-//     "type": "git",
-//     "url": "git+https://github.com/ProskurinV/ts_practice.git"
-//   },
-//   "keywords": [],
-//   "author": "",
-//   "license": "ISC",
-//   "bugs": {
-//     "url": "https://github.com/ProskurinV/ts_practice/issues"
-//   },
-//   "homepage": "https://github.com/ProskurinV/ts_practice#readme",
-//   "devDependencies": {
-//     "lite-server": "^2.6.1"
-//   }
-// }
