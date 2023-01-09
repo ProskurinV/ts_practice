@@ -172,3 +172,163 @@
 // };
 // person1.showName();
 // person2.showName();
+
+// class House {
+//   private tenants: string[] = [];
+
+//   constructor(public readonly type: string, protected street: string) {}
+
+//   public showAddress(this: House): void {
+//     console.log("Address " + this.street);
+//   }
+
+//   public showType(this: House): void {
+//     console.log("Type " + this.type);
+//   }
+
+//   public addTenant(name: string) {
+//     this.tenants.push(name);
+//   }
+
+//   public showTenants() {
+//     console.log(this.tenants);
+//   }
+// }
+// // const house = new House("wood", "Pchilky");
+
+// // house.addTenant("Max");
+// // house.addTenant("Alex");
+// // house.showTenants();
+
+// class StoneHouse extends House {
+//   private chargeOfTheHouse: string;
+
+//   constructor(street: string, general: string) {
+//     super("stone", street);
+
+//     this.chargeOfTheHouse = general;
+//   }
+
+//   public showTenants() {
+//     console.log("General: " + this.chargeOfTheHouse);
+
+//     super.showTenants();
+//   }
+
+//   public showAddress(): void {
+//     console.log("Adress " + this.street);
+//   }
+// }
+
+// const stoneHouse = new StoneHouse("Stone-World", "Max");
+
+// stoneHouse.addTenant("Anton");
+// stoneHouse.addTenant("Nikita");
+
+// stoneHouse.showTenants();
+// stoneHouse.showAddress();
+
+// INTERFACE
+// interface IPerson {
+//   name: string;
+//   age: number;
+
+//   greet(phrase: string): void;
+// }
+
+// let user: IPerson;
+
+// user = {
+//   name: "Max",
+//   age: 25,
+
+//   greet(phrase: string) {
+//     console.log(phrase + " " + this.name);
+//   },
+// };
+
+// user.greet("Hello, I`m");
+
+// TYPE
+// type IPerson = {
+//   readonly name: string;
+//   age: number;
+
+//   greet: (phrase: string) => void;
+// };
+
+// let user: IPerson;
+
+// user = {
+//   name: "Max",
+//   age: 25,
+
+//   greet(phrase: string) {
+//     console.log(phrase + " " + this.name);
+//   },
+// };
+
+// user.greet("Hello, I`m");
+
+interface IPerson {
+  name: string;
+  age: number;
+
+  greet(phrase: string): void;
+}
+
+interface IPilot {
+  flyMessage(): void;
+}
+
+class Pilot implements IPerson, IPilot {
+  constructor(public readonly name: string, public age: number) {
+    this.checkAge();
+  }
+
+  private checkAge() {
+    if (this.age < 28) {
+      throw new Error("Pilot is too young");
+    }
+  }
+  public greet(phrase: string): void {
+    console.log(phrase + " " + this.name);
+  }
+
+  public flyMessage(): void {
+    console.log("Plane is in the sky");
+  }
+}
+
+abstract class Plain {
+  protected pilot?: IPilot;
+
+  public sitInPlane(pilot: IPilot): void {
+    this.pilot = pilot;
+  }
+
+  public abstract startEngine(): boolean;
+}
+
+class Boing extends Plain {
+  public startEngine() {
+    if (!this.pilot) {
+      throw new Error("No pilot in cabin!");
+    }
+
+    console.log("Starting");
+
+    this.pilot.flyMessage();
+
+    return true;
+  }
+}
+
+const pilot = new Pilot("Max", 30);
+const boing = new Boing();
+
+pilot.greet("This is pilot");
+
+boing.sitInPlane(pilot);
+
+boing.startEngine();
