@@ -1,40 +1,45 @@
 "use strict";
-class Pilot {
-    constructor(name, age) {
-        this.name = name;
-        this.age = age;
-        this.checkAge();
+class Key {
+    constructor() {
+        this.signature = Math.random();
     }
-    checkAge() {
-        if (this.age < 28) {
-            throw new Error("Pilot is too young");
+    getSignature() {
+        return this.signature;
+    }
+}
+class Person {
+    constructor(key) {
+        this.key = key;
+    }
+    getKey() {
+        return this.key;
+    }
+}
+class House {
+    constructor(key) {
+        this.key = key;
+        this.door = false;
+        this.tenants = [];
+    }
+    comeIn(person) {
+        if (!this.door) {
+            throw new Error("Door is close");
         }
-    }
-    greet(phrase) {
-        console.log(phrase + " " + this.name);
-    }
-    flyMessage() {
-        console.log("Plane is in the sky");
+        this.tenants.push(person);
+        console.log("Person inside");
     }
 }
-class Plain {
-    sitInPlane(pilot) {
-        this.pilot = pilot;
-    }
-}
-class Boing extends Plain {
-    startEngine() {
-        if (!this.pilot) {
-            throw new Error("No pilot in cabin!");
+class MyHouse extends House {
+    openDoor(key) {
+        if (key.getSignature() !== this.key.getSignature()) {
+            throw new Error("Key to another door");
         }
-        console.log("Starting");
-        this.pilot.flyMessage();
-        return true;
+        return (this.door = true);
     }
 }
-const pilot = new Pilot("Max", 30);
-const boing = new Boing();
-pilot.greet("This is pilot");
-boing.sitInPlane(pilot);
-boing.startEngine();
+const key = new Key();
+const house = new MyHouse(key);
+const person = new Person(key);
+house.openDoor(person.getKey());
+house.comeIn(person);
 //# sourceMappingURL=app.js.map

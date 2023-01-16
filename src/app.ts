@@ -270,65 +270,147 @@
 
 // user.greet("Hello, I`m");
 
-interface IPerson {
-  name: string;
-  age: number;
+// interface IPerson {
+//   name: string;
+//   age: number;
 
-  greet(phrase: string): void;
-}
+//   greet(phrase: string): void;
+// }
 
-interface IPilot {
-  flyMessage(): void;
-}
+// interface IPilot {
+//   flyMessage(): void;
+// }
 
-class Pilot implements IPerson, IPilot {
-  constructor(public readonly name: string, public age: number) {
-    this.checkAge();
+// class Pilot implements IPerson, IPilot {
+//   constructor(public readonly name: string, public age: number) {
+//     this.checkAge();
+//   }
+
+//   private checkAge() {
+//     if (this.age < 28) {
+//       throw new Error("Pilot is too young");
+//     }
+//   }
+//   public greet(phrase: string): void {
+//     console.log(phrase + " " + this.name);
+//   }
+
+//   public flyMessage(): void {
+//     console.log("Plane is in the sky");
+//   }
+// }
+
+// abstract class Plain {
+//   protected pilot?: IPilot;
+
+//   public sitInPlane(pilot: IPilot): void {
+//     this.pilot = pilot;
+//   }
+
+//   public abstract startEngine(): boolean;
+// }
+
+// class Boing extends Plain {
+//   public startEngine() {
+//     if (!this.pilot) {
+//       throw new Error("No pilot in cabin!");
+//     }
+
+//     console.log("Starting");
+
+//     this.pilot.flyMessage();
+
+//     return true;
+//   }
+// }
+
+// const pilot = new Pilot("Max", 30);
+// const boing = new Boing();
+
+// pilot.greet("This is pilot");
+
+// boing.sitInPlane(pilot);
+
+// boing.startEngine();
+
+// type AddFunc = (n1: number, n2: number) => number;
+
+// const foo: AddFunc = (n1: number, n2: number) => {
+//   return n1 + n2;
+// };
+
+// Создайте абстрактный класс House в нем должны быть следующая логика
+
+// свойство door, она может быть либо закрыта, либо открыта.
+// свойство key - объект класса Key.
+// конструктор принимает аргумент класса Key и сохраняет его в свойство key.
+// метод comeIn, который добавляет объект класса Person в свойство tenants и это срабатывает только если door открыта.
+// абстрактный метод openDoor принимает аргумент класса Key
+// Создайте класс MyHouse который реализует класс House
+
+// создаем метод openDoor, так как он принимает ключ, сверяем сохраненный ключ в свойстве key равен ли он ключу из аргумента, если да, открываем дверь.
+// Создайте объект Key
+
+// есть только свойство signature
+// во время создания объекта генерирует случайное число и сохраняет его в signature
+// метод getSignature возвращает случайное число из signature
+// Создайте объект Person
+
+// конструктор принимает ключ класса Key и сохраняет его в свойство key
+// метод getKey возвращает key
+// Сделайте так, чтобы жилец попал домой.
+
+class Key {
+  private signature: number;
+
+  constructor() {
+    this.signature = Math.random();
   }
 
-  private checkAge() {
-    if (this.age < 28) {
-      throw new Error("Pilot is too young");
+  getSignature(): number {
+    return this.signature;
+  }
+}
+
+class Person {
+  constructor(private key: Key) {}
+  getKey(): Key {
+    return this.key;
+  }
+}
+
+abstract class House {
+  protected door = false;
+  private tenants: Person[] = [];
+  constructor(protected key: Key) {}
+
+  comeIn(person: Person): void {
+    if (!this.door) {
+      throw new Error("Door is close");
     }
-  }
-  public greet(phrase: string): void {
-    console.log(phrase + " " + this.name);
+
+    this.tenants.push(person);
+    console.log("Person inside");
   }
 
-  public flyMessage(): void {
-    console.log("Plane is in the sky");
-  }
+  abstract openDoor(key: Key): boolean;
 }
 
-abstract class Plain {
-  protected pilot?: IPilot;
-
-  public sitInPlane(pilot: IPilot): void {
-    this.pilot = pilot;
-  }
-
-  public abstract startEngine(): boolean;
-}
-
-class Boing extends Plain {
-  public startEngine() {
-    if (!this.pilot) {
-      throw new Error("No pilot in cabin!");
+class MyHouse extends House {
+  openDoor(key: Key) {
+    if (key.getSignature() !== this.key.getSignature()) {
+      throw new Error("Key to another door");
     }
 
-    console.log("Starting");
-
-    this.pilot.flyMessage();
-
-    return true;
+    return (this.door = true);
   }
 }
 
-const pilot = new Pilot("Max", 30);
-const boing = new Boing();
+const key = new Key();
 
-pilot.greet("This is pilot");
+const house = new MyHouse(key);
+const person = new Person(key);
 
-boing.sitInPlane(pilot);
+house.openDoor(person.getKey());
 
-boing.startEngine();
+house.comeIn(person);
